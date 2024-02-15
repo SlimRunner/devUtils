@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.0.1
+// @version     0.1.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
 // @match       http://*/*
 // @match       https://*/*
+// @noframes
 // ==/UserScript==
 
 (function () {
