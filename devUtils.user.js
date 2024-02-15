@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.2.1
+// @version     0.2.2
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -46,7 +46,7 @@
   };
   
   window.utils.darkToggle = (v = 80) => {
-    const body = document.body;
+    const body = document.body.parentElement;
     if (!body.style.filter) {
       body.style.filter = `invert(${v}%)`;
     } else {
