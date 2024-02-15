@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.1.0
+// @version     0.2.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -44,4 +44,13 @@
       .replace(/(\s)+/g, "$1");
     window.utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
+  
+  window.utils.darkToggle = () => {
+    const body = document.body;
+    if (body.style.filter) {
+      body.style.filter = "invert(80%)";
+    } else {
+      body.style.filter = "";
+    }
+  }
 })();
