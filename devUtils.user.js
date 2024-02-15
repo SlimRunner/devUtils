@@ -45,10 +45,10 @@
     window.utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
   
-  window.utils.darkToggle = () => {
+  window.utils.darkToggle = (v = 80) => {
     const body = document.body;
-    if (body.style.filter) {
-      body.style.filter = "invert(80%)";
+    if (!body.style.filter) {
+      body.style.filter = `invert(${v}%)`;
     } else {
       body.style.filter = "";
     }
