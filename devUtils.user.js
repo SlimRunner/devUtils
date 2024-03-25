@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.3.1
+// @version     0.3.2
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -60,7 +60,7 @@
 
   let utilname = "utils";
   let index = 0;
-  while (typeof window[utilname] === "undefined") {
+  while (typeof window[utilname] !== "undefined") {
     if (index > 1000) {
       throw new Error("Too many attempts to find a utils name.");
     }
