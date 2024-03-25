@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.3.0
+// @version     0.3.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -13,10 +13,10 @@
 (function () {
   "use strict";
 
-  window.utils = {};
+  const utils = {};
 
   // Function to download data to a file
-  window.utils.download = function (data, filename, type) {
+  utils.download = function (data, filename, type) {
     var file = new Blob([data], { type: type });
     if (window.navigator.msSaveOrOpenBlob) {
       // IE10+
@@ -36,16 +36,16 @@
     }
   };
 
-  window.utils.getPage = () => {
+  utils.getPage = () => {
     const XMLS = new XMLSerializer();
     const HTML = XMLS.serializeToString(document);
     const title = document.title
       .replace(/[^.a-zA-Z0-9 _-]/g, "")
       .replace(/(\s)+/g, "$1");
-    window.utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
+    utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
   
-  window.utils.darkToggle = (v = 80) => {
+  utils.darkToggle = (v = 80) => {
     const body = document.body.parentElement;
     if (!body.style.filter) {
       body.style.filter = `invert(${v}%)`;
@@ -54,7 +54,22 @@
     }
   };
 
-  window.utils.reverseLines = (text) => {
+  utils.reverseLines = (text) => {
     return text.split("\n").reverse().join("\n");
   };
+
+  let utilname = "utils";
+  let index = 0;
+  while (typeof window[utilname] === "undefined") {
+    if (index > 1000) {
+      throw new Error("Too many attempts to find a utils name.");
+    }
+    console.warn(
+      `${utilname} was taken.`
+    );
+    utilname = `utils${index++}`;
+  }
+
+  window[utilname] = utils;
+  console.log(`Assigned ${utilname} to window`);
 })();
