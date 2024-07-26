@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.3.4
+// @version     0.4.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -13,7 +13,7 @@
 (function () {
   "use strict";
 
-  const utils = {};
+  const utils = Object.create(null);
 
   // Function to download data to a file
   utils.download = function (data, filename, type) {
@@ -44,7 +44,7 @@
       .replace(/(\s)+/g, "$1");
     utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
-  
+
   utils.darkToggle = (v = 80) => {
     const body = document.body.parentElement;
     if (!body.style.filter) {
@@ -58,15 +58,55 @@
     return text.split("\n").reverse().join("\n");
   };
 
+  utils.range = function* (start, end = null, step = 1) {
+    if (end === null) {
+      [start, end] = [0, start];
+    }
+    if ((end - start) * step < 0) {
+      return;
+    } else if (step >= 1) {
+      for (let i = start; i < end; i += step) {
+        yield i;
+      }
+    } else {
+      for (let i = start; i > end; i += step) {
+        yield i;
+      }
+    }
+  };
+
+  utils.divSet = function* (start, end, divisor, offset = 0) {
+    let s = Math.sign(end - start);
+    if (start === end) {
+      yield start;
+      return;
+    } else if (divisor === 0) {
+      return;
+    }
+    const mod = (n, m) => {
+      const rem = n % m;
+      return n * m >= 0 ? rem : rem ? rem + m : 0;
+    };
+    const st = Math.abs(divisor);
+    const n = mod(offset, st);
+    let i = start;
+    if (i % st !== n) {
+      i += s >= 0 ? st - mod(i - n, st) : -mod(i - n, st);
+      if (!(s >= 0 ? i <= end : i >= end)) return;
+    }
+    while (s >= 0 ? i <= end : i >= end) {
+      yield i;
+      i += s * st;
+    }
+  };
+
   let utilname = "utils";
   let index = 0;
   while (typeof window[utilname] !== "undefined") {
     if (index > 1000) {
       throw new Error("Too many attempts to find a utils name.");
     }
-    console.warn(
-      `${utilname} was taken.`
-    );
+    console.warn(`${utilname} was taken.`);
     utilname = `utils${index++}`;
   }
 
