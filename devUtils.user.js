@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.5.1
+// @version     0.5.2
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -37,13 +37,18 @@
   };
 
   utils.savePage = () => {
-    utils.saveElement(document);
+    const XMLS = new XMLSerializer();
+    const HTML = XMLS.serializeToString(document);
+    const title = document.title
+      .replace(/[^.a-zA-Z0-9 _-]/g, "")
+      .replace(/(\s)+/g, "$1");
+    utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
 
   utils.saveElement = (elem) => {
     const XMLS = new XMLSerializer();
     const HTML = XMLS.serializeToString(elem);
-    const title = `${elem.tagName.toLowerCase()} - ${document.title}`
+    const title = `${elem.tagName.toLowerCase()}-${document.title}`
       .replace(/[^.a-zA-Z0-9 _-]/g, "")
       .replace(/(\s)+/g, "$1");
     utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
