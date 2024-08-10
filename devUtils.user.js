@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.4.0
+// @version     0.5.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -36,10 +36,19 @@
     }
   };
 
-  utils.getPage = () => {
+  utils.savePage = () => {
     const XMLS = new XMLSerializer();
     const HTML = XMLS.serializeToString(document);
     const title = document.title
+      .replace(/[^.a-zA-Z0-9 _-]/g, "")
+      .replace(/(\s)+/g, "$1");
+    utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
+  };
+
+  utils.saveElement = (elem) => {
+    const XMLS = new XMLSerializer();
+    const HTML = XMLS.serializeToString(elem);
+    const title = `${elem.tagName.toLowerCase()} - ${document.title}`
       .replace(/[^.a-zA-Z0-9 _-]/g, "")
       .replace(/(\s)+/g, "$1");
     utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
@@ -56,6 +65,29 @@
 
   utils.reverseLines = (text) => {
     return text.split("\n").reverse().join("\n");
+  };
+
+  utils.shuffleLines = (text) => {
+    return utils.shuffle(text.split("\n")).join("\n");
+  };
+
+  utils.randInt = (start, end = null) => {
+    if (end === null) {
+      [start, end] = [0, start];
+    }
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_integer_between_two_values
+    const minCeiled = Math.ceil(start);
+    const maxFloored = Math.floor(end);
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  };
+
+  utils.shuffle = (arr) => {
+    let out = [...arr];
+    for (let i = 0, j; i < arr.length; ++i) {
+      j = utils.randInt(0, arr.length);
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
   };
 
   utils.range = function* (start, end = null, step = 1) {
