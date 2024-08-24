@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.5.2
+// @version     0.6.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -130,6 +130,23 @@
       yield i;
       i += s * st;
     }
+  };
+
+  utils.isBalanced = (text, pairs) => {
+    const pairMap = new Map(pairs);
+    const closeSet = new Set(pairMap.values());
+    const N = text.length;
+    const stack = [];
+
+    for (let char of text) {
+      if (pairMap.has(char)) {
+        stack.push(pairMap.get(char));
+      } else if (closeSet.has(char) && char != stack.pop()) {
+        return false;
+      }
+    }
+
+    return !stack.length;
   };
 
   let utilname = "utils";
