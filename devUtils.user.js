@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.6.0
+// @version     0.7.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -34,6 +34,18 @@
         window.URL.revokeObjectURL(url);
       }, 0);
     }
+  };
+
+  // Function to download a raw URI data to a file
+  utils.downloadURI = function (uri, filename) {
+    var a = document.createElement("a");
+    a.href = uri;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+    }, 0);
   };
 
   utils.savePage = () => {
