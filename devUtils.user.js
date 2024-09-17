@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.7.0
+// @version     0.8.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -14,6 +14,19 @@
   "use strict";
 
   const utils = Object.create(null);
+
+  utils.MIME = Object.freeze({
+    image: {
+      bmp: "image/bmp",
+      gif: "image/gif",
+      ico: "image/vnd.microsoft.icon",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      svg: "image/svg+xml",
+      tiff: "image/tiff",
+      webp: "image/webp",
+    },
+  });
 
   // Function to download data to a file
   utils.download = function (data, filename, type) {
