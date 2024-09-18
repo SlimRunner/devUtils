@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.8.0
+// @version     0.8.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -13,10 +13,12 @@
 (function () {
   "use strict";
 
+  const freezeFromNull = (obj) => Object.assign(Object.create(null), obj);
+
   const utils = Object.create(null);
 
-  utils.MIME = Object.freeze({
-    image: {
+  utils.MIME = freezeFromNull({
+    image: freezeFromNull({
       bmp: "image/bmp",
       gif: "image/gif",
       ico: "image/vnd.microsoft.icon",
@@ -25,7 +27,7 @@
       svg: "image/svg+xml",
       tiff: "image/tiff",
       webp: "image/webp",
-    },
+    }),
   });
 
   // Function to download data to a file
