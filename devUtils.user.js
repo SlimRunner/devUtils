@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.9.2
+// @version     0.9.3
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -240,6 +240,7 @@
   helpers.spareStyleTags = spareStyleTags;
   helpers.generateBraceSet = generateBraceSet;
   helpers.MIME = MIME;
+  utils.helpers = helpers;
 
   let utilName = "utils";
   let index = 0;
