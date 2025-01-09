@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        DevUtils
-// @namespace   slidav.Desmos
+// @namespace   slidav.general
 // @version     0.9.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
