@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.9.1
+// @version     0.9.2
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -206,6 +206,22 @@
   const spareStyleTags = (node) =>
     utils.itemInList(node.tagName.toLowerCase(), ["script", "style"]);
 
+  const generateBraceSet = (text) => {
+    if (text.length % 2 !== 0) {
+      throw RangeError("Braces must come in pairs");
+    }
+
+    const output = new Map();
+    if (typeof text === "string" || text instanceof String) {
+      for (let i = 0; i < text.length; i += 2) {
+        output.set(text.at(i), text.at(i + 1));
+      }
+    } else {
+      throw TypeError("Argument must be a string");
+    }
+    return output;
+  }
+
   utils.download = download;
   utils.downloadURI = downloadURI;
   utils.savePage = savePage;
@@ -222,6 +238,7 @@
   utils.filterDocumentByElem = filterDocumentByElem;
 
   helpers.spareStyleTags = spareStyleTags;
+  helpers.generateBraceSet = generateBraceSet;
   helpers.MIME = MIME;
 
   let utilName = "utils";
