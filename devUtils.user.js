@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.9.0
+// @version     0.9.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -18,7 +18,7 @@
   const utils = Object.create(null);
   const helpers = Object.create(null);
 
-  utils.MIME = freezeFromNull({
+  const MIME = freezeFromNull({
     image: freezeFromNull({
       bmp: "image/bmp",
       gif: "image/gif",
@@ -32,7 +32,7 @@
   });
 
   // Function to download data to a file
-  utils.download = function (data, filename, type) {
+  const download = function (data, filename, type) {
     var file = new Blob([data], { type: type });
     if (window.navigator.msSaveOrOpenBlob) {
       // IE10+
@@ -53,7 +53,7 @@
   };
 
   // Function to download a raw URI data to a file
-  utils.downloadURI = function (uri, filename) {
+  const downloadURI = function (uri, filename) {
     var a = document.createElement("a");
     a.href = uri;
     a.download = filename;
@@ -64,25 +64,25 @@
     }, 0);
   };
 
-  utils.savePage = () => {
+  const savePage = () => {
     const XMLS = new XMLSerializer();
     const HTML = XMLS.serializeToString(document);
     const title = document.title
       .replace(/[^.a-zA-Z0-9 _-]/g, "")
       .replace(/(\s)+/g, "$1");
-    utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
+    download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
 
-  utils.saveElement = (elem) => {
+  const saveElement = (elem) => {
     const XMLS = new XMLSerializer();
     const HTML = XMLS.serializeToString(elem);
     const title = `${elem.tagName.toLowerCase()}-${document.title}`
       .replace(/[^.a-zA-Z0-9 _-]/g, "")
       .replace(/(\s)+/g, "$1");
-    utils.download(HTML, `${title}.html`, "text/html; charset=UTF-8");
+    download(HTML, `${title}.html`, "text/html; charset=UTF-8");
   };
 
-  utils.darkToggle = (v = 80) => {
+  const darkToggle = (v = 80) => {
     const body = document.body.parentElement;
     if (!body.style.filter) {
       body.style.filter = `invert(${v}%)`;
@@ -91,15 +91,15 @@
     }
   };
 
-  utils.reverseLines = (text) => {
+  const reverseLines = (text) => {
     return text.split("\n").reverse().join("\n");
   };
 
-  utils.shuffleLines = (text) => {
-    return utils.shuffle(text.split("\n")).join("\n");
+  const shuffleLines = (text) => {
+    return shuffle(text.split("\n")).join("\n");
   };
 
-  utils.randInt = (start, end = null) => {
+  const randInt = (start, end = null) => {
     if (end === null) {
       [start, end] = [0, start];
     }
@@ -109,16 +109,16 @@
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
   };
 
-  utils.shuffle = (arr) => {
+  const shuffle = (arr) => {
     let out = [...arr];
     for (let i = 0, j; i < arr.length; ++i) {
-      j = utils.randInt(0, arr.length);
+      j = randInt(0, arr.length);
       [out[i], out[j]] = [out[j], out[i]];
     }
     return out;
   };
 
-  utils.range = function* (start, end = null, step = 1) {
+  const range = function* (start, end = null, step = 1) {
     if (end === null) {
       [start, end] = [0, start];
     }
@@ -135,7 +135,7 @@
     }
   };
 
-  utils.divSet = function* (start, end, divisor, offset = 0) {
+  const divSet = function* (start, end, divisor, offset = 0) {
     let s = Math.sign(end - start);
     if (start === end) {
       yield start;
@@ -160,7 +160,7 @@
     }
   };
 
-  utils.isBalanced = (text, pairs) => {
+  const isBalanced = (text, pairs) => {
     const pairMap = new Map(pairs);
     const closeSet = new Set(pairMap.values());
     const N = text.length;
@@ -177,7 +177,7 @@
     return !stack.length;
   };
 
-  utils.itemInList = (item, list) => {
+  const itemInList = (item, list) => {
     if (Array.isArray(list)) {
       const set = new Set(list);
       return set.has(item);
@@ -186,14 +186,14 @@
     }
   };
 
-  utils.filterDocumentByElem = (node, target, filter = (e) => false) => {
+  const filterDocumentByElem = (node, target, filter = (e) => false) => {
     if (node instanceof HTMLElement && target instanceof HTMLElement) {
       if (node.isSameNode(target)) {
         return;
       }
       if (node.contains(target)) {
         for (const child of Array.from(node.children)) {
-          utils.filterDocumentByElem(child, target, filter);
+          filterDocumentByElem(child, target, filter);
         }
       } else if (!filter(node)) {
         node.remove();
@@ -203,19 +203,37 @@
     }
   };
 
-  helpers.spareStyleTags = (node) =>
+  const spareStyleTags = (node) =>
     utils.itemInList(node.tagName.toLowerCase(), ["script", "style"]);
 
-  let utilname = "utils";
+  utils.download = download;
+  utils.downloadURI = downloadURI;
+  utils.savePage = savePage;
+  utils.saveElement = saveElement;
+  utils.darkToggle = darkToggle;
+  utils.reverseLines = reverseLines;
+  utils.shuffleLines = shuffleLines;
+  utils.randInt = randInt;
+  utils.shuffle = shuffle;
+  utils.range = range;
+  utils.divSet = divSet;
+  utils.isBalanced = isBalanced;
+  utils.itemInList = itemInList;
+  utils.filterDocumentByElem = filterDocumentByElem;
+
+  helpers.spareStyleTags = spareStyleTags;
+  helpers.MIME = MIME;
+
+  let utilName = "utils";
   let index = 0;
-  while (typeof window[utilname] !== "undefined") {
+  while (typeof window[utilName] !== "undefined") {
     if (index > 1000) {
       throw new Error("Too many attempts to find a utils name.");
     }
-    console.warn(`${utilname} was taken.`);
-    utilname = `utils${index++}`;
+    console.warn(`${utilName} was taken.`);
+    utilName = `utils${index++}`;
   }
 
-  window[utilname] = utils;
-  console.log(`Assigned ${utilname} to window`);
+  window[utilName] = utils;
+  console.log(`Assigned ${utilName} to window`);
 })();
