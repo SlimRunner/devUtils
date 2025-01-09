@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.Desmos
-// @version     0.8.1
+// @version     0.9.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -16,6 +16,7 @@
   const freezeFromNull = (obj) => Object.assign(Object.create(null), obj);
 
   const utils = Object.create(null);
+  const helpers = Object.create(null);
 
   utils.MIME = freezeFromNull({
     image: freezeFromNull({
@@ -175,6 +176,35 @@
 
     return !stack.length;
   };
+
+  utils.itemInList = (item, list) => {
+    if (Array.isArray(list)) {
+      const set = new Set(list);
+      return set.has(item);
+    } else {
+      throw TypeError("item must be an array");
+    }
+  };
+
+  utils.filterDocumentByElem = (node, target, filter = (e) => false) => {
+    if (node instanceof HTMLElement && target instanceof HTMLElement) {
+      if (node.isSameNode(target)) {
+        return;
+      }
+      if (node.contains(target)) {
+        for (const child of Array.from(node.children)) {
+          utils.filterDocumentByElem(child, target, filter);
+        }
+      } else if (!filter(node)) {
+        node.remove();
+      }
+    } else {
+      throw TypeError("root and element must be HTMLElements")
+    }
+  };
+
+  helpers.spareStyleTags = (node) =>
+    utils.itemInList(node.tagName.toLowerCase(), ["script", "style"]);
 
   let utilname = "utils";
   let index = 0;
