@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.9.3
+// @version     0.9.4
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -13,7 +13,8 @@
 (function () {
   "use strict";
 
-  const freezeFromNull = (obj) => Object.assign(Object.create(null), obj);
+  const freezeFromNull = (obj) =>
+    Object.freeze(Object.assign(Object.create(null), obj));
 
   const utils = Object.create(null);
   const helpers = Object.create(null);
