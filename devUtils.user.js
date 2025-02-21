@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.9.4
+// @version     0.10.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -136,7 +136,7 @@
     }
   };
 
-  const divSet = function* (start, end, divisor, offset = 0) {
+  const divset = function* (start, end, divisor, offset = 0) {
     let s = Math.sign(end - start);
     if (start === end) {
       yield start;
@@ -158,6 +158,18 @@
     while (s >= 0 ? i <= end : i >= end) {
       yield i;
       i += s * st;
+    }
+  };
+
+  const zipgen = function* (...iters) {
+    let notDone = true;
+    while (notDone) {
+      const yieldset = iters.map((iter) => iter.next());
+      if (yieldset.some(({ value, done }) => done)) {
+        notDone = false;
+      } else {
+        yield yieldset.map(({ value, done }) => value);
+      }
     }
   };
 
@@ -200,7 +212,7 @@
         node.remove();
       }
     } else {
-      throw TypeError("root and element must be HTMLElements")
+      throw TypeError("root and element must be HTMLElements");
     }
   };
 
@@ -221,7 +233,7 @@
       throw TypeError("Argument must be a string");
     }
     return output;
-  }
+  };
 
   utils.download = download;
   utils.downloadURI = downloadURI;
@@ -233,7 +245,8 @@
   utils.randInt = randInt;
   utils.shuffle = shuffle;
   utils.range = range;
-  utils.divSet = divSet;
+  utils.divset = divset;
+  utils.zipgen = zipgen;
   utils.isBalanced = isBalanced;
   utils.itemInList = itemInList;
   utils.filterDocumentByElem = filterDocumentByElem;
