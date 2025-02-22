@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.10.0
+// @version     0.10.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -163,12 +163,19 @@
 
   const zipgen = function* (...iters) {
     let notDone = true;
+    iters = iters.map((it) => {
+      if (typeof it === "object" && typeof it?.values === "function") {
+        return it.values();
+      } else {
+        return it;
+      }
+    });
     while (notDone) {
       const yieldset = iters.map((iter) => iter.next());
-      if (yieldset.some(({ value, done }) => done)) {
+      if (yieldset.some(({ done }) => done)) {
         notDone = false;
       } else {
-        yield yieldset.map(({ value, done }) => value);
+        yield yieldset.map(({ value }) => value);
       }
     }
   };
