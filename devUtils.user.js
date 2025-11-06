@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.10.1
+// @version     0.11.0
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -242,6 +242,56 @@
     return output;
   };
 
+  const getPDFOutline = (tree = null) => {
+    const root = document.querySelector("#sidebarContent #outlineView");
+    if (!(root instanceof HTMLElement)) {
+      throw TypeError("expects an HTML element");
+    }
+
+    const payload = {
+      title: null,
+      subtitles: [],
+    };
+    let children = null;
+
+    if (tree === null) {
+      tree = payload;
+      children = root.querySelectorAll(":scope > .treeItem");
+    } else {
+      const title = root.querySelector("a")?.textContent ?? null;
+      payload.title = title;
+      tree.subtitles.push(payload);
+      children = root.querySelectorAll(":scope > .treeItems > .treeItem");
+    }
+
+    children.forEach((item) => {
+      captureOutline(item, payload);
+    });
+
+    return tree;
+  };
+
+  const unrollOutline = (outline) => {
+    const output = [];
+    let stack = outline.subtitles.toReversed().map((e) => [0, e]);
+
+    if (!(stack instanceof Array)) {
+      throw TypeError("nodes should be an array");
+    }
+
+    while (stack.length > 0) {
+      const [i, node] = stack.pop();
+
+      for (const child of node.subtitles.toReversed()) {
+        stack.push([i + 1, child]);
+      }
+
+      output.push([i, node.title]);
+    }
+
+    return output.map(([i, e]) => "  ".repeat(i) + "- " + e).join("\n");
+  };
+
   utils.download = download;
   utils.downloadURI = downloadURI;
   utils.savePage = savePage;
@@ -257,6 +307,8 @@
   utils.isBalanced = isBalanced;
   utils.itemInList = itemInList;
   utils.filterDocumentByElem = filterDocumentByElem;
+  utils.getPDFOutline = getPDFOutline;
+  utils.unrollOutline = unrollOutline;
 
   helpers.spareStyleTags = spareStyleTags;
   helpers.generateBraceSet = generateBraceSet;
