@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DevUtils
 // @namespace   slidav.general
-// @version     0.11.0
+// @version     0.11.1
 // @author      SlimRunner (David Flores)
 // @description Developer utilities.
 // @grant       none
@@ -242,8 +242,10 @@
     return output;
   };
 
-  const getPDFOutline = (tree = null) => {
-    const root = document.querySelector("#sidebarContent #outlineView");
+  const getPDFOutline = ({
+    root = document.querySelector("#sidebarContent #outlineView"),
+    tree = null,
+  } = {}) => {
     if (!(root instanceof HTMLElement)) {
       throw TypeError("expects an HTML element");
     }
@@ -265,7 +267,7 @@
     }
 
     children.forEach((item) => {
-      captureOutline(item, payload);
+      getPDFOutline({root: item, tree: payload});
     });
 
     return tree;
