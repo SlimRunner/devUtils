@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        devutils
 // @namespace   slidav.Desmos
-// @version     1.0.0
+// @version     1.1.0
 // @author      SlimRunner
 // @description Developer utilities for web console
 // @grant       none
@@ -63,10 +63,10 @@
         if (!t) {
           if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) {
             t && (r = t);
-            var _n = 0, F = function F2() {
+            var _n2 = 0, F = function F2() {
             };
             return { s: F, n: function n() {
-              return _n >= r.length ? { done: true } : { done: false, value: r[_n++] };
+              return _n2 >= r.length ? { done: true } : { done: false, value: r[_n2++] };
             }, e: function e2(r2) {
               throw r2;
             }, f: F };
@@ -669,6 +669,72 @@
               var _ref7 = _slicedToArray(_ref6, 2), i2 = _ref7[0], e = _ref7[1];
               return "  ".repeat(i2) + "- " + e;
             }).join("\n");
+          }
+        }, {
+          key: "rangeList",
+          value: function rangeList(list) {
+            var itemSeparator = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : ",";
+            var rangeSeparator = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "-";
+            return /* @__PURE__ */ _regenerator().m(function _callee3() {
+              var items, _iterator4, _step4, rangeString, rangeSplit, n1, n2, _n, _t2;
+              return _regenerator().w(function(_context5) {
+                while (1) switch (_context5.p = _context5.n) {
+                  case 0:
+                    items = list.split(itemSeparator);
+                    _iterator4 = _createForOfIteratorHelper(items);
+                    _context5.p = 1;
+                    _iterator4.s();
+                  case 2:
+                    if ((_step4 = _iterator4.n()).done) {
+                      _context5.n = 8;
+                      break;
+                    }
+                    rangeString = _step4.value;
+                    rangeSplit = rangeString.split(rangeSeparator);
+                    if (!(rangeSplit.length === 2)) {
+                      _context5.n = 4;
+                      break;
+                    }
+                    n1 = parseInt(rangeSplit[0]);
+                    n2 = parseInt(rangeSplit[1]);
+                    _context5.n = 3;
+                    return [n1, n2];
+                  case 3:
+                    _context5.n = 7;
+                    break;
+                  case 4:
+                    if (!(rangeSplit.length === 1)) {
+                      _context5.n = 6;
+                      break;
+                    }
+                    _n = parseInt(rangeSplit[0]);
+                    _context5.n = 5;
+                    return [_n, _n];
+                  case 5:
+                    _context5.n = 7;
+                    break;
+                  case 6:
+                    _context5.n = 7;
+                    return [Number.NaN, Number.NaN];
+                  case 7:
+                    _context5.n = 2;
+                    break;
+                  case 8:
+                    _context5.n = 10;
+                    break;
+                  case 9:
+                    _context5.p = 9;
+                    _t2 = _context5.v;
+                    _iterator4.e(_t2);
+                  case 10:
+                    _context5.p = 10;
+                    _iterator4.f();
+                    return _context5.f(10);
+                  case 11:
+                    return _context5.a(2);
+                }
+              }, _callee3, null, [[1, 9, 10, 11]]);
+            })();
           }
         }]);
       })();
