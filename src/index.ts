@@ -316,6 +316,28 @@ class Utils {
 
     return output.map(([i, e]) => "  ".repeat(i) + "- " + e).join("\n");
   }
+
+  *rangeList(
+    list: string,
+    itemSeparator = ",",
+    rangeSeparator = "-",
+  ): Generator<[number, number], void, unknown> {
+    const items = list.split(itemSeparator);
+    for (const rangeString of items) {
+      const rangeSplit = rangeString.split(rangeSeparator);
+      if (rangeSplit.length === 2) {
+        const n1 = parseInt(rangeSplit[0]);
+        const n2 = parseInt(rangeSplit[1]);
+        yield [n1, n2];
+      } else if (rangeSplit.length === 1) {
+        const n1 = parseInt(rangeSplit[0]);
+        yield [n1, n1];
+      } else {
+        yield [Number.NaN, Number.NaN];
+      }
+    }
+    return;
+  }
 }
 
 let utilName = "utils";
