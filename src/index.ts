@@ -338,6 +338,26 @@ class Utils {
     }
     return;
   }
+
+  addStyleSheet(rules: string, dedent = true) {
+    if (dedent) {
+      const TAB = /^\t/.test(rules) ? "\t" : " ";
+      const tabBase = rules
+        .match(new RegExp(String.raw`^${TAB}+(?!\n$)`, "gm"))
+        ?.reduce((acc, curr) => Math.min(acc, curr.length), Infinity);
+      if (tabBase) {
+        let tab = "";
+        for (let i = 0; i < tabBase; ++i) {
+          tab += " ";
+        }
+        rules = rules.replaceAll(new RegExp(`^${TAB}{${tabBase}}`, "gm"), "");
+      }
+    }
+    const style = document.createElement("style");
+    style.textContent = rules;
+    document.head.append(style);
+    return style;
+  }
 }
 
 let utilName = "utils";
