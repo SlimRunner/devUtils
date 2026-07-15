@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        devutils
 // @namespace   slidav.Desmos
-// @version     1.1.0
+// @version     1.2.0
 // @author      SlimRunner
 // @description Developer utilities for web console
 // @grant       none
@@ -28,6 +28,10 @@
   // src/index.ts
   var require_index = __commonJS({
     "src/index.ts": function() {
+      var _templateObject;
+      function _taggedTemplateLiteral(e, t) {
+        return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t) } }));
+      }
       function _slicedToArray(r, e) {
         return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
       }
@@ -735,6 +739,29 @@
                 }
               }, _callee3, null, [[1, 9, 10, 11]]);
             })();
+          }
+        }, {
+          key: "addStyleSheet",
+          value: function addStyleSheet(rules) {
+            var dedent = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
+            if (dedent) {
+              var _rules$match;
+              var TAB = /^\t/.test(rules) ? "	" : " ";
+              var tabBase = (_rules$match = rules.match(new RegExp(String.raw(_templateObject || (_templateObject = _taggedTemplateLiteral(["^", "+(?!\n$)"], ["^", "+(?!\\n$)"])), TAB), "gm"))) === null || _rules$match === void 0 ? void 0 : _rules$match.reduce(function(acc, curr) {
+                return Math.min(acc, curr.length);
+              }, Infinity);
+              if (tabBase) {
+                var tab = "";
+                for (var i = 0; i < tabBase; ++i) {
+                  tab += " ";
+                }
+                rules = rules.replaceAll(new RegExp("^".concat(TAB, "{").concat(tabBase, "}"), "gm"), "");
+              }
+            }
+            var style = document.createElement("style");
+            style.textContent = rules;
+            document.head.append(style);
+            return style;
           }
         }]);
       })();
